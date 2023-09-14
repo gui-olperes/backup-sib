@@ -1,0 +1,132 @@
+{% extends 'templates/menu.html' %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% block body %}
+<div class="container">
+    <h1>SIB - Sistema Inteligente de Busca</h1><br><br>
+    <form method="POST" action="/">
+        {% if error_message %}
+        <div class="alert alert-danger" role="alert">
+        {{ error_message }}
+        </div>
+        {% endif %}
+        <div class="form-group">
+            <input type="text" name="search_query" class="form-control" placeholder="Digite sua busca..." oninput="enableOperators(this.value)">
+        </div>
+        <div>
+            <button type="button" class="btn btn-secondary" onclick="addOperator('E')" data-toggle="tooltip" data-placement="top" title="Recuperar documentos que contenham todos os termos especificados, mesmo estando distantes entre si dentro de um mesmo registro. 'Exemplo: desapropriação E indenização'" disabled>E</button>
+            <button type="button" class="btn btn-secondary" onclick="addOperator('NÃO')" data-toggle="tooltip" data-placement="top" title="Recuperar documentos que contenham o primeiro, mas não o segundo termo. 'Exemplo: Correção monetária NÃO FGTS'" disabled>NÃO</button>
+            <button type="button" class="btn btn-secondary" onclick="addOperator('OU')" data-toggle="tooltip" data-placement="top" title="Encontrar documentos em que contenham um ou todos os termos pesquisados. 'Exemplo: mulher OU esposa'. Pode existir o primeiro e o segundo, ou apenas um dos dois." disabled>OU</button>
+            <select id="classe_select" name="classe_select" class="form-control">
+                <option value="">-- Selecione a Classe --</option>
+            </select>
+
+
+        </div><br>
+        <button type="submit" class="btn btn-primary">Buscar</button><br><br>
+    </form>
+
+    {% if search_query %}
+        <div class="form-group">
+            <input type="checkbox" id="select-all-checkbox">
+            <label for="select-all-checkbox">Selecionar todos</label>
+            <button style="display: none" type="button" id="select-all-button" class="btn btn-secondary">Selecionar todos</button>
+        </div>
+
+        <h2>Resultados para '{{ search_query }}':</h2>
+        <p>{{ total_results }} processos encontrados</p>
+        {% if search_results %}
+            <table class="table table-alter table-sib">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Número do Processo</th>
+                        <th>nome_classe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in search_results %}
+                        <tr>
+                            <td><input type="checkbox" class="processo-checkbox selectAllCheckboxes" data-processo-id="{{ result['numero_processo'] }}"></td>
+                            <td>{{ result.numero_processo|replace_case_insensitive(search_query, '<mark class="highlight">' + search_query + '</mark>')|safe }}</td>
+                            <td>{{ result.nome_classe|replace_case_insensitive(search_query, '<mark class="highlight">' + search_query + '</mark>')|safe }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                {% if result.modeloDocumento|length > 400 %}
+                                    <div id="content-{{ loop.index }}" class="preview-content">
+                                        <span class="preview">{{ result.modeloDocumento|truncate(400, True, '...')|replace_case_insensitive(search_query, '<mark class="highlight">' + search_query + '</mark>')|safe }}</span>
+                                        {% if result.modeloDocumento|length > 400 %}
+                                            <span class="read-more-toggle" onclick="toggleContent({{ loop.index }})">... <strong>Leia mais</strong></span>
+                                        {% endif %}
+                                        <span class="full-content" style="display: none;">{{ result.modeloDocumento|replace_case_insensitive(search_query, '<mark class="highlight">' + search_query + '</mark>')|safe }}</span>
+                                        {% if result.modeloDocumento|length > 700 %}
+                                            <span class="read-more-toggle" onclick="toggleContent({{ loop.index }})"><strong>Fechar</strong></span>
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    {{ result.modeloDocumento|replace_case_insensitive(search_query, '<mark class="highlight">' + search_query + '</mark>')|safe }}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="pagination">
+                <button id="prev-button" class="btn btn-secondary">Anterior</button>
+                <button id="next-button" class="btn btn-secondary">Próxima</button>
+            </div>
+
+            <br>
+            <button type="button" class="btn btn-primary" id="exportar-button" disabled onclick="openExportModal()">Exportar</button>
+            <br><br>
+            {% include 'templates/modal.html' %}
+        {% else %}
+            <p>Nenhum resultado encontrado.</p>
+        {% endif %}
+    {% endif %}
+</div>
+<br>
+<footer class="footer-sib d-flex justify-content-center align-items-center">
+  <div>
+    <p>© Tribunal Regional Federal da 1ª Região - 2023 - Versão 1.0</p>
+  </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+<script>
+    // Verifica o estado do contraste no LocalStorage
+    var contrasteAtivo = localStorage.getItem('contrasteAtivo') === 'true';
+
+    // Aplica as alterações de estilo com base no estado do contraste
+    if (contrasteAtivo) {
+        var element = document.body;
+        element.classList.add("dark-mode");
+        element.classList.add("footer-dark-mode");
+    }
+
+// Preencher o select com as classes do servidor (via AJAX)
+fetch('/get_unique_classes')  // Substitua pela rota correta no servidor
+    .then(response => response.json())
+    .then(data => {
+        const classeSelect = document.getElementById('classe_select');
+
+        // Limpar opções existentes, exceto a primeira opção
+        while (classeSelect.options.length > 1) {
+            classeSelect.remove(1);
+        }
+
+        // Adicionar as novas opções
+        data.forEach(classe => {
+            const option = document.createElement('option');
+            option.value = classe;
+            option.textContent = classe;
+            classeSelect.appendChild(option);
+        });
+    })
+    .catch(error => {
+        console.error('Erro ao buscar as classes:', error);
+    });
+</script>
+{% endblock %}

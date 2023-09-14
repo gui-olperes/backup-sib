@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<nav class="navbar navbar-expand-lg  head-sib">
+  <div class="container-fluid container head-sib">
+    <a class="navbar-brand head-sib" href="/">
+      <img src="static/logo-trf1.png" width="320" height="70">
+    </a>
+
+    <button class="navbar-toggler head-sib" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon head-sib"></span>
+    </button>
+
+    <div class="collapse navbar-collapse head-sib" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 head-sib">
+      </ul>
+
+      <ul class="navbar-nav head-sib">
+        <li class="nav-item head-sib">
+          <a class="nav-link head-sib" href="https://scahml.trf1.jus.br/auth/realms/master/protocol/openid-connect/auth?client_id=security-admin-console&redirect_uri=https%3A%2F%2Fscahml.trf1.jus.br%2Fauth%2Fadmin%2Fmaster%2Fconsole%2F%23%2Frealms%2FJF1%2Fusers%2F844abc3e-96a4-48ef-a5bc-b6e07c3b35b1%2Fgroups&state=33e335cc-b4e8-49ae-aa3a-d9443014e4ea&response_mode=fragment&response_type=code&scope=openid&nonce=4d7e4340-7a17-4f05-b64d-a3242530f1e3">Login</a>
+        </li>
+        <li class="nav-item head-sib">
+          <a class="nav-link head-sib"  href="{{url_for('ajuda', filename='templates/ajuda.html')}}">Ajuda</a>
+        </li>
+        <li class="nav-item head-sib">
+          <a class="nav-link head-sib" href="{{url_for('acessibilidade', filename='templates/acessibilidade.html')}}">Acessibilidade</a>
+        </li>
+        <li class="nav-item head-sib">
+          <button class="btn btn-outline-primary" onclick="toggleContrast()">Contraste</button>
+          <button class="btn btn-outline-primary" onclick="lerConteudo()">Ler Conteúdo</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
+    </div>
+</div>
+
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+<script>new window.VLibras.Widget('https://vlibras.gov.br/app');</script>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>

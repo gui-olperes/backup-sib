@@ -1,0 +1,60 @@
+{% extends 'templates/menu.html' %}
+
+{% block body %}
+
+
+  <div class="container mt-4">
+    <strong>Acessibilidade Digital</strong><br><br>
+    <p>
+      Acessibilidade de contraste refere-se a um conjunto de diretrizes e práticas projetadas para garantir que o conteúdo digital seja facilmente legível e perceptível para todas as pessoas, independentemente de suas habilidades visuais. O contraste adequado entre as cores é fundamental para permitir que pessoas com baixa visão ou dificuldades de percepção de cores consigam ler o conteúdo de forma clara.
+
+</p>
+    <p>
+      Uma das maneiras de garantir a acessibilidade de contraste é seguir as recomendações estabelecidas pelas diretrizes de acessibilidade, como as definidas pelo WCAG (Web Content Accessibility Guidelines). Essas diretrizes estabelecem critérios específicos para o contraste entre o texto e o fundo, de modo a garantir que haja uma diferença perceptível entre as cores. Geralmente, isso significa usar cores claras para o texto em um fundo escuro, ou cores escuras para o texto em um fundo claro.
+
+</p>
+    <p>
+      Além disso, é importante considerar o tamanho do texto, pois fontes pequenas e finas podem dificultar a leitura, mesmo com um contraste adequado. Usar fontes legíveis e com tamanho suficiente contribui para a acessibilidade de contraste.
+
+</p>
+    <p>
+      Quanto à leitura de conteúdo, a acessibilidade se refere à disponibilização de informações de forma clara e compreensível para todos os usuários, independentemente de suas habilidades de leitura ou níveis de alfabetização. Isso inclui aspectos como o uso de linguagem simples e direta, evitando jargões complexos e fornecendo explicações adicionais quando necessário.
+
+</p>
+    <p>
+      Existem várias técnicas que podem ser utilizadas para tornar o conteúdo mais acessível. Uma delas é dividir o texto em seções ou parágrafos curtos, facilitando a leitura e a compreensão. O uso de listas numeradas ou com marcadores também pode ajudar a organizar as informações de forma clara.
+</p>
+    <p>
+      Além disso, o uso de recursos visuais, como imagens, diagramas ou gráficos, pode auxiliar na compreensão do conteúdo, especialmente para pessoas que têm dificuldades de leitura. No entanto, é importante fornecer alternativas textuais para esses recursos visuais, permitindo que pessoas com deficiência visual também tenham acesso às informações.
+
+</p>
+    <p>
+      Por fim, VLibras refere-se a um sistema de tradução automática de conteúdo para a Língua Brasileira de Sinais (Libras). Libras é a língua utilizada pela comunidade surda no Brasil, e o VLibras é uma ferramenta que possibilita a tradução de texto em português para sinais, tornando o conteúdo digital mais acessível para pessoas surdas.
+
+</p>
+    <p
+    >O VLibras funciona por meio de um avatar digital que interpreta e sinaliza o texto digitado pelo usuário. Essa ferramenta permite que pessoas surdas tenham acesso a informações em tempo real, proporcionando uma experiência mais inclusiva e igualitária na navegação pela internet.
+
+</p>
+    <p>
+      Em resumo, a acessibilidade de contraste busca garantir que o conteúdo digital seja facilmente legível por meio do uso adequado de cores e tamanhos de fonte. A leitura de conteúdo acessível envolve a criação de informações claras e compreensíveis para todos os usuários. Já o VLibras é uma ferramenta que traduz conteúdo para Libras, tornando-o acessível para pessoas surdas. Essas práticas e tecnologias visam promover uma internet mais inclusiva, onde todos tenham igualdade de acesso à informação.
+    </p>
+  </div>
+
+  <!-- Incluir os arquivos JavaScript do Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script>
+    // Verifica o estado do contraste no LocalStorage
+    var contrasteAtivo = localStorage.getItem('contrasteAtivo') === 'true';
+
+    // Aplica as alterações de estilo com base no estado do contraste
+    if (contrasteAtivo) {
+        var element = document.body;
+        element.classList.add("dark-mode");
+        element.classList.add("footer-dark-mode");
+    }
+  </script>
+
+{% endblock %}

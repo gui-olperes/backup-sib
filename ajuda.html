@@ -1,0 +1,43 @@
+{% extends 'templates/menu.html' %}
+
+{% block body %}
+
+
+  <div class="container mt-4">
+    <strong>Ajuda - SIB</strong><br><br>
+    <p>Bem-vindo à página de ajuda do SIB. Aqui você encontrará informações sobre a busca de termos no Pje.</p><br>
+    <strong>Como realizar uma busca de termos:</strong>
+    <ol>
+      <li>Abra o painel de busca do SIB.</li>
+      <li>Informe o termo que deseja buscar no campo de busca.</li>
+      <li>Selecione os filtros opcionais, se necessário.</li>
+      <li>Clique no botão "Buscar" para iniciar a busca.</li>
+    </ol><br>
+    <strong>Dicas para busca eficiente:</strong>
+    <ul>
+      <li>Utilize aspas para buscar uma frase completa: "termo de busca".</li>
+      <li>Use operadores lógicos como AND, OR, NOT para refinar a busca.</li>
+      <li>Utilize os filtros para restringir a busca por data, tipo de documento, entre outros critérios.</li>
+      <li>Experimente diferentes termos de busca para obter resultados mais relevantes.</li>
+    </ul>
+    <p>Se você tiver alguma dúvida adicional, entre em contato com nossa equipe de suporte.</p>
+  </div>
+
+  <!-- Incluir os arquivos JavaScript do Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <script>
+    // Verifica o estado do contraste no LocalStorage
+    var contrasteAtivo = localStorage.getItem('contrasteAtivo') === 'true';
+
+    // Aplica as alterações de estilo com base no estado do contraste
+    if (contrasteAtivo) {
+        var element = document.body;
+        element.classList.add("dark-mode");
+        element.classList.add("footer-dark-mode");
+    }
+  </script>
+
+{% endblock %}
